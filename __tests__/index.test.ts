@@ -20,3 +20,17 @@ test('generateEnv', async (t) => {
 
   t.is(actual, expected)
 })
+
+test('generateEnv with JS template', async (t) => {
+  generateEnv({
+    envFile: path.resolve(dirname, './.env'),
+    templateFile: path.resolve(dirname, '../source/template.js.ejs'),
+    outputFile: path.resolve(dirname, './output-env.js'),
+    clientVarPrefix: 'NEXT_PUBLIC_',
+  })
+
+  const expected = await fs.readFile(path.resolve(dirname, './expected-env.js'), 'utf8')
+  const actual = await fs.readFile(path.resolve(dirname, './output-env.js'), 'utf8')
+
+  t.is(actual, expected)
+})
