@@ -2,3 +2,4 @@ node_modules
 dist
 public
 __tests__/output-env.ts
+__tests__/output-env.js

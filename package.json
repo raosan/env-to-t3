@@ -73,7 +73,8 @@
     "extends": "xo-react",
     "prettier": true,
     "ignores": [
-      "__tests__/expected-env.ts"
+      "__tests__/expected-env.ts",
+      "__tests__/expected-env.js"
     ],
     "rules": {
       "react/prop-types": "off",

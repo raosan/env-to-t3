@@ -7,6 +7,7 @@ type EnvVarInfo = {
   validationType: string
   required: boolean
   defaultValue: string | number | null
+  jsDocType?: string
 }
 
 // Function to read the environment file and categorize variables with advanced validation logic
@@ -39,11 +40,23 @@ const parseEnvFile = (filePath: string, clientVarPrefix: string) => {
       }
     }
 
+    // Determine JSDoc type based on validation type and whether it's optional
+    const baseJsDocType = isNumber ? 'z.ZodNumber' : 'z.ZodString'
+    let jsDocType = baseJsDocType
+    if (hasDefault) {
+      jsDocType = `z.ZodDefault<${baseJsDocType}>`
+    }
+
+    if (!isRequired) {
+      jsDocType = `z.ZodOptional<${jsDocType}>`
+    }
+
     const varInfo: EnvVarInfo = {
       name: trimmedKey,
       validationType: isNumber ? 'number({ coerce: true })' : 'string()',
       required: isRequired,
       defaultValue,
+      jsDocType,
     }
 
     if (trimmedKey.startsWith(clientVarPrefix)) {
